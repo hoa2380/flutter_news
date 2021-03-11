@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-        backgroundColor: Colors.grey,
+        backgroundColor: Color(0xFF66b3c4),
         title: Text('MENU',
           style: TextStyle(color: Colors.white) ,),
       ),
@@ -174,7 +174,7 @@ class _HomeState extends State<Home> {
               children: [
                 Text(
                   'GIỚI THIỆU',
-                  style:TextStyle(fontSize: 25, color: Color(0xFF4999af), fontWeight: FontWeight.bold ),
+                  style: AppStyle.title
                 )
               ],
             ),
@@ -214,7 +214,7 @@ class _HomeState extends State<Home> {
               children: [
                 Text(
                   'DỊCH VỤ CỦA CHÚNG TÔI',
-                  style:TextStyle(fontSize: 25, color: Color(0xFF4999af), fontWeight: FontWeight.bold ),
+                  style: AppStyle.title
                 )
               ],
             ),

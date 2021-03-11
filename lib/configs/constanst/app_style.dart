@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppStyle {
-  static final TextStyle title = TextStyle(
-      color: Colors.black.withOpacity(0.80),
-      fontSize: 22,
-      fontWeight: FontWeight.w600);
+  static final TextStyle title =TextStyle(
+      fontSize: 25, color: Color(0xFF4999af),
+      fontWeight: FontWeight.bold
+  );
   static final TextStyle titleWhite = TextStyle(
       color: Colors.white.withOpacity(0.80),
       fontSize: 22,
