@@ -35,6 +35,10 @@ dependencies:
   firebase_auth: ^0.18.3+1
   #facebook_login
   flutter_facebook_login: ^3.0.0
+  #utils
+  flutter_swiper: ^1.1.6
+  responsive_framework: ^0.0.15
+  animations: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +58,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - asset/image/logo.png
+    - asset/image/banner_1.png
+    - asset/image/banner_2.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
