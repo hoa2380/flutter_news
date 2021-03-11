@@ -2,6 +2,11 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_news/configs/config.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_news/widget/line_title.dart';
+import 'package:flutter_news/widget/slide_image.dart';
+import 'package:flutter_news/wp-api.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -9,10 +14,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+
+  String removeAllHtmlTags(String htmlText) {
+    RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
+
+    return htmlText.replaceAll(exp, '');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
         backgroundColor: Colors.grey,
         title: Text('MENU',
           style: TextStyle(color: Colors.white) ,),
@@ -20,23 +33,38 @@ class _HomeState extends State<Home> {
       endDrawer: Drawer(
         child: ListView(
           children: [
-            ListTile(
-              title: Text('TRANG CHỦ'),
+            SizedBox(height: 10,),
+            Row(
+              children: [
+                Spacer(),
+                Container(
+                  height: 25,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                      child: Image.network('https://design.bpotech.com.vn/elodichvu/wp-content/themes/elodichvu/img/common/close_sp.png')),
+                ),
+                SizedBox(width: 10,),
+              ],
             ),
             ListTile(
-              title: Text('VỀ CHÚNG TÔI'),
+              title: Text('TRANG CHỦ', style: AppStyle.textDrawer,),
             ),
             ListTile(
-              title: Text('DỊCH VỤ'),
+              title: Text('VỀ CHÚNG TÔI', style: AppStyle.textDrawer),
             ),
             ListTile(
-              title: Text('NHÂN SỰ'),
+              title: Text('DỊCH VỤ', style: AppStyle.textDrawer),
             ),
             ListTile(
-              title: Text('BÀI VIỆT'),
+              title: Text('NHÂN SỰ', style: AppStyle.textDrawer),
             ),
             ListTile(
-              title: Text('LIÊN HỆ'),
+              title: Text('BÀI VIỆT', style: AppStyle.textDrawer),
+            ),
+            ListTile(
+              title: Text('LIÊN HỆ', style: AppStyle.textDrawer),
             ),
           ],
         ),
@@ -79,7 +107,7 @@ class _HomeState extends State<Home> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
               child: Container(
-                height: 28,
+                height: 40,
                 decoration: BoxDecoration(
                   color: Color(0xFF66b3c4),
                 ),
@@ -89,11 +117,14 @@ class _HomeState extends State<Home> {
                   children: [
                     SizedBox(width: 10,),
                     Text('Đăng nhập',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                      style: AppStyle.subWhite
+                    ),
                     Text('|',
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        style: AppStyle.subWhite
+                    ),
                     Text('Ghi danh',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                      style: AppStyle.subWhite
+                    ),
                     Spacer(),
                     Icon(
                       Icons.search,
@@ -108,39 +139,27 @@ class _HomeState extends State<Home> {
             Container(
               height:150,
               child: Stack(
-                fit: StackFit.expand,
                 children: [
-                  Image.asset('asset/image/banner-home.png', fit: BoxFit.cover),
-                  ClipRRect( // Clip it cleanly.
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  SlideImage(),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       child: Container(
-                        color: Colors.grey.withOpacity(0.1),
-                        alignment: Alignment.center,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                          child: Container(
-                            height: 50,
-                              color: Color.fromRGBO(86, 132, 39, 0.80),
-                            child: Center(
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Sứ mệnh : ',
-                                    style: TextStyle(
-                                        color: Colors.white, fontWeight: FontWeight.bold, decoration: TextDecoration.underline
-                                    ),
-                                  ),
-                                  Flexible(
-                                    child: Text(' "Mang niềm tin đến doanh nghiệp và người tiều dùng".',
-                                      style: TextStyle(
-                                          color: Colors.white, fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                        height: 50,
+                          color: Color.fromRGBO(86, 132, 39, 0.80),
+                        child: Center(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Sứ mệnh : ',
+                                style: AppStyle.textWhite
                               ),
-                            ),
+                              Flexible(
+                                child: Text(' "Mang niềm tin đến doanh nghiệp và người tiều dùng".',
+                                  style: AppStyle.textWhite
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -159,6 +178,8 @@ class _HomeState extends State<Home> {
                 )
               ],
             ),
+            SizedBox(height: 10,),
+            LineTitle(),
             SizedBox(height: 15,),
             Html(
               data: """
@@ -186,7 +207,82 @@ class _HomeState extends State<Home> {
                 )
               ],
             ),
+            SizedBox(height: 20,),
+            Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'DỊCH VỤ CỦA CHÚNG TÔI',
+                  style:TextStyle(fontSize: 25, color: Color(0xFF4999af), fontWeight: FontWeight.bold ),
+                )
+              ],
+            ),
             SizedBox(height: 10,),
+            LineTitle(),
+            SizedBox(height: 15,),
+            Row(
+              children: [
+                Flexible(
+                    child: Text(
+                      'Đam mê cùng năng lực, chúng tôi: Đội ngũ kinh nghiệm nhiệt tình và trách nhiệm, cam kết Phải chú trọng Uy tín, dịch vụ Chất lượng tốt, và cuối cùng luôn lắng nghe khách hàng, không ngừng nỗ lực và cải thiện nhằm mang lại sự thõa mãn nhất đến khách hàng và người tiêu dùng.',
+                      textAlign: TextAlign.center,
+                    )
+                )
+              ],
+            ),
+            Container(
+              height: 500,
+              padding: EdgeInsets.only(top: 24),
+              child: FutureBuilder(
+                future: fetchWpPostsCategory(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          Map wppost = snapshot.data[index];
+                          return PostTile(
+                              name: wppost['name'],
+                          );
+                        }
+                        );
+                  }
+
+                  return Center(child: CircularProgressIndicator());
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+class PostTile extends StatefulWidget {
+  final String name;
+  PostTile({this.name});
+
+  @override
+  _PostTileState createState() => _PostTileState();
+}
+
+class _PostTileState extends State<PostTile> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Container(
+        color: Color(0xff568427),
+        padding: EdgeInsets.symmetric(vertical: 5.0),
+        child: Column(
+          children: [
+            Text(
+              widget.name,
+              style: AppStyle.textCate,
+            ),
           ],
         ),
       ),
