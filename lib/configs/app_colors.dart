@@ -4,6 +4,8 @@ class AppColors {
   static final Color colorPrimary = HexColor.fromHex('3BA7F8');
   static final Color colorSecondary = HexColor.fromHex('66B3C4');
   static final Color colorThirdly = HexColor.fromHex('709549');
+  static final Color colorFourthly = HexColor.fromHex('F3EEEA');
+  static final Color colorFifthly = HexColor.fromHex('F3933D');
 }
 
 class HexColor {

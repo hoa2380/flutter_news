@@ -29,6 +29,16 @@ class AppStyle {
       fontSize: 15,
       fontWeight: FontWeight.w400);
 
+  static final TextStyle subBlack = TextStyle(
+      color: Colors.black54,
+      fontSize: 15,
+      fontWeight: FontWeight.w700);
+
+  static final TextStyle subOrange = TextStyle(
+      color: Colors.orange,
+      fontSize: 15,
+      fontWeight: FontWeight.w800);
+
   static final TextStyle subUnderline = TextStyle(
       color: Colors.white,
       fontSize: 15,
