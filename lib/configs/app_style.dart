@@ -13,6 +13,11 @@ class AppStyle {
       fontSize: 28,
       fontWeight: FontWeight.w900);
 
+  static final TextStyle titleWhiteSm = TextStyle(
+      color: Colors.white,
+      fontSize: 22,
+      fontWeight: FontWeight.w700);
+
   static final TextStyle titleUnderline = TextStyle(
       color: Colors.white,
       fontSize: 15,
@@ -28,6 +33,12 @@ class AppStyle {
       color: Colors.white,
       fontSize: 15,
       fontWeight: FontWeight.w400);
+
+  static final TextStyle subGrey = TextStyle(
+    color: Colors.grey,
+    fontSize: 15,
+    fontWeight: FontWeight.w700,
+  );
 
   static final TextStyle subBlack = TextStyle(
       color: Colors.black54,

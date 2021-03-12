@@ -12,7 +12,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,19 +28,19 @@ class MyApp extends StatelessWidget {
             ResponsiveBreakpoint.resize(1200, name: DESKTOP),
             ResponsiveBreakpoint.autoScale(2460, name: "4K"),
           ]),
-      initialRoute: Routes.home,
-      onGenerateRoute: (RouteSettings settings) {
-        return Routes.fadeThrough(settings, (context) {
-          switch (settings.name) {
-            case Routes.home:
-              return Home();
-              break;
-            default:
-              return null;
-              break;
-          }
-        });
-      },
+      // initialRoute: Routes.home,
+      // onGenerateRoute: (RouteSettings settings) {
+      //   return Routes.fadeThrough(settings, (context) {
+      //     switch (settings.name) {
+      //       case Routes.home:
+      //         return Home();
+      //         break;
+      //       default:
+      //         return null;
+      //         break;
+      //     }
+      //   });
+      // },
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
