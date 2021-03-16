@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_news/configs/configs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_news/wp-api.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'pages.dart';
 
@@ -14,6 +15,8 @@ extension on Page {
 }
 
 class Home extends HookWidget {
+  String category;
+
   final Map<Page, Widget> _fragments = {
     Page.Dashboard: DashBoardPage(),
     Page.Post: PostPage(),
@@ -160,82 +163,55 @@ class Home extends HookWidget {
               ],
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      primary: AppColors.colorPrimary,
-                      // shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-                    ),
-                    onPressed: () {},
-                    child: Text(
-                      "Trang chủ",
-                      style: AppStyle.subTitle,
-                    ),
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      primary: AppColors.colorPrimary,
-                      // shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-                    ),
-                    onPressed: () {},
-                    child: Text(
-                      "Về chúng tôi",
-                      style: AppStyle.subTitle,
-                    ),
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      primary: AppColors.colorPrimary,
-                      // shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-                    ),
-                    onPressed: () {},
-                    child: Text(
-                      "Dịch vụ",
-                      style: AppStyle.subTitle,
-                    ),
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      primary: AppColors.colorPrimary,
-                      // shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-                    ),
-                    onPressed: () {},
-                    child: Text(
-                      "Nhân sự",
-                      style: AppStyle.subTitle,
-                    ),
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      primary: AppColors.colorPrimary,
-                      // shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-                    ),
-                    onPressed: () {},
-                    child: Text(
-                      "Bài viết",
-                      style: AppStyle.subTitle,
-                    ),
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      primary: AppColors.colorPrimary,
-                      // shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-                    ),
-                    onPressed: () {},
-                    child: Text(
-                      "Liên hệ",
-                      style: AppStyle.subTitle,
-                    ),
-                  ),
-                ],
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: FutureBuilder(
+                future: fetchCategories(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          Map wpCategories = snapshot.data[index];
+                          return Categories(
+                              categories: wpCategories['name']);
+                        });
+                  }
+                  return Center(child: CircularProgressIndicator());
+                },
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class Categories extends StatelessWidget {
+  final String categories;
+
+  const Categories({
+    Key key,
+    this.categories,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextButton(
+          style: TextButton.styleFrom(
+            primary: AppColors.colorPrimary,
+            // shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+          ),
+          onPressed: () {},
+          child: Text(
+            categories,
+            style: AppStyle.subTitle,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -259,10 +235,10 @@ class Footer extends StatelessWidget {
               style: AppStyle.subBlack,
               decoration: InputDecoration(
                 filled: true,
-                  fillColor: Colors.white,
-                  suffixIcon: Container(
+                fillColor: Colors.white,
+                suffixIcon: Container(
                     color: Colors.blue,
-                      child: Image.asset('asset/image/icon-send.png')),
+                    child: Image.asset('asset/image/icon-send.png')),
               ),
             ),
           ),
@@ -274,7 +250,8 @@ class Footer extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 14),
             child: Column(
               children: [
-                Text("8:00 - 17:00 ( Thứ 2 đến thứ 6 ).", style: AppStyle.subGrey),
+                Text("8:00 - 17:00 ( Thứ 2 đến thứ 6 ).",
+                    style: AppStyle.subGrey),
                 Text("8:00 - 12:00 ( Thứ 7 ).", style: AppStyle.subGrey),
                 Text("Nghỉ ( Chủ nhật và ngày lễ ).", style: AppStyle.subGrey),
               ],
@@ -298,8 +275,9 @@ class Footer extends StatelessWidget {
             ),
           ),
           Divider(color: Colors.grey),
-          Text("© Copyright 2017 Bản quyền thuộc về Công ty TNHH TVĐT Sinh Thái Việt.",
-              style: AppStyle.subGrey,
+          Text(
+            "© Copyright 2017 Bản quyền thuộc về Công ty TNHH TVĐT Sinh Thái Việt.",
+            style: AppStyle.subGrey,
             textAlign: TextAlign.center,
           ),
         ],

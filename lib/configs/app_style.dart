@@ -13,6 +13,11 @@ class AppStyle {
       fontSize: 28,
       fontWeight: FontWeight.w900);
 
+  static final TextStyle titleBlack = TextStyle(
+      color: Colors.black54,
+      fontSize: 17,
+      fontWeight: FontWeight.w900);
+
   static final TextStyle titleWhiteSm = TextStyle(
       color: Colors.white,
       fontSize: 22,
