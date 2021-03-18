@@ -1,8 +1,12 @@
 import 'dart:ui';
 
 class AppColors {
-  static final Color colorPrimary = HexColor.fromHex('009b00');
-  static final Color colorSecondary = HexColor.fromHex('28212e');
+  static final Color colorPrimary = HexColor.fromHex('3BA7F8');
+  static final Color colorSecondary = HexColor.fromHex('66B3C4');
+  static final Color colorThirdly = HexColor.fromHex('709549');
+  static final Color colorFourthly = HexColor.fromHex('F3EEEA');
+  static final Color colorFifthly = HexColor.fromHex('F3933D');
+  static final Color colorFooter = HexColor.fromHex('515151');
 }
 
 class HexColor {
