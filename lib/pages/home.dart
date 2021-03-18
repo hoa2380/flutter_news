@@ -16,7 +16,6 @@ extension on Page {
 
 class Home extends HookWidget {
   String category;
-
   final Map<Page, Widget> _fragments = {
     Page.Dashboard: DashBoardPage(),
     Page.Post: PostPage(),
@@ -98,18 +97,18 @@ class Home extends HookWidget {
                                 ),
                                 InkWell(
                                     child: Text(
-                                  'Đăng nhập',
-                                  style: AppStyle.sub,
-                                )),
+                                      'Đăng nhập',
+                                      style: AppStyle.sub,
+                                    )),
                                 Text(' | ',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold)),
                                 InkWell(
                                     child: Text(
-                                  'Ghi danh',
-                                  style: AppStyle.sub,
-                                )),
+                                      'Ghi danh',
+                                      style: AppStyle.sub,
+                                    )),
                                 Spacer(),
                                 Icon(
                                   Icons.search,
@@ -134,7 +133,7 @@ class Home extends HookWidget {
                       onGenerateRoute: (settings) {
                         final pageName = settings.name;
                         final page = _fragments.keys.firstWhere(
-                            (element) => describeEnum(element) == pageName);
+                                (element) => describeEnum(element) == pageName);
                         return MaterialPageRoute(
                             settings: settings,
                             builder: (context) => _fragments[page]);
@@ -181,10 +180,8 @@ class Home extends HookWidget {
                                   primary: AppColors.colorPrimary,
                                   // shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
                                 ),
-                                onPressed: (){
-                                  // Navigator.push(
-                                  //     context, MaterialPageRoute(builder: (BuildContext context) => DashBoardPage(id: "14",)));
-                          },
+                                onPressed: () => navigatorKey.currentState
+                                    .popAndPushNamed(Page.Dashboard.route),
                                 child: Text(
                                   wpCategories['name'],
                                   style: AppStyle.subTitle,
@@ -333,7 +330,7 @@ class _SliderState extends State<Slider> {
                             text: 'Sứ mệnh: ', style: AppStyle.subUnderline),
                         TextSpan(
                             text:
-                                ' “Mang niềm tin đến doanh nghiệp và người tiêu dùng”. ',
+                            ' “Mang niềm tin đến doanh nghiệp và người tiêu dùng”. ',
                             style: AppStyle.sub),
                       ],
                     ),

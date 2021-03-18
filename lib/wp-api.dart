@@ -17,6 +17,7 @@ fetchWpPostImageUrl(url) async {
 
 Future<List> fetchCategories(String id) async {
   Map<String, dynamic> params = {"parent": id};
+
   String query = Uri(queryParameters: params).query;
   var requestUrl =
       "https://design.bpotech.com.vn/elodichvu/wp-json/wp/v2/categories" +
@@ -32,6 +33,5 @@ fetchAbout() async {
       "https://design.bpotech.com.vn/elodichvu/wp-json/wp/v2/pages/75",
       headers: {"Accept": "application/json"});
   var convertDatatoJson = jsonDecode(response.body);
-  print(convertDatatoJson);
   return convertDatatoJson;
 }

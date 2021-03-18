@@ -7,6 +7,7 @@ class AppColors {
   static final Color colorFourthly = HexColor.fromHex('F3EEEA');
   static final Color colorFifthly = HexColor.fromHex('F3933D');
   static final Color colorFooter = HexColor.fromHex('515151');
+  static final Color colorClicked = HexColor.fromHex("3d6217");
 }
 
 class HexColor {
