@@ -8,7 +8,7 @@ import 'package:flutter_news/wp-api.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'pages.dart';
 
-enum Page { Dashboard, Post, Login }
+enum Page { Dashboard, Post, Login, About }
 
 extension on Page {
   String get route => describeEnum(this);
@@ -21,6 +21,7 @@ class Home extends HookWidget {
     Page.Dashboard: DashBoardPage(),
     Page.Post: PostPage(),
     Page.Login: LoginPage(),
+    Page.About: AboutPage(),
   };
 
   @override
@@ -44,7 +45,7 @@ class Home extends HookWidget {
           ),
         ),
         body: CustomScrollView(
-          slivers: [
+          slivers: <Widget>[
             SliverFillRemaining(
               hasScrollBody: false,
               child: Column(
@@ -165,15 +166,32 @@ class Home extends HookWidget {
             body: Container(
               padding: EdgeInsets.symmetric(horizontal: 8),
               child: FutureBuilder(
-                future: fetchCategories(),
+                future: fetchCategories("0"),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(
                         itemCount: snapshot.data.length,
                         itemBuilder: (BuildContext context, int index) {
                           Map wpCategories = snapshot.data[index];
-                          return Categories(
-                              categories: wpCategories['name']);
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextButton(
+                                style: TextButton.styleFrom(
+                                  primary: AppColors.colorPrimary,
+                                  // shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+                                ),
+                                onPressed: (){
+                                  // Navigator.push(
+                                  //     context, MaterialPageRoute(builder: (BuildContext context) => DashBoardPage(id: "14",)));
+                          },
+                                child: Text(
+                                  wpCategories['name'],
+                                  style: AppStyle.subTitle,
+                                ),
+                              ),
+                            ],
+                          );
                         });
                   }
                   return Center(child: CircularProgressIndicator());
@@ -183,35 +201,6 @@ class Home extends HookWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class Categories extends StatelessWidget {
-  final String categories;
-
-  const Categories({
-    Key key,
-    this.categories,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TextButton(
-          style: TextButton.styleFrom(
-            primary: AppColors.colorPrimary,
-            // shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-          ),
-          onPressed: () {},
-          child: Text(
-            categories,
-            style: AppStyle.subTitle,
-          ),
-        ),
-      ],
     );
   }
 }
