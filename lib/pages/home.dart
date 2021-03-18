@@ -16,7 +16,6 @@ extension on Page {
 
 class Home extends HookWidget {
   String category;
-
   final Map<Page, Widget> _fragments = {
     Page.Dashboard: DashBoardPage(),
     Page.Post: PostPage(),
@@ -181,10 +180,8 @@ class Home extends HookWidget {
                                   primary: AppColors.colorPrimary,
                                   // shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
                                 ),
-                                onPressed: (){
-                                  // Navigator.push(
-                                  //     context, MaterialPageRoute(builder: (BuildContext context) => DashBoardPage(id: "14",)));
-                          },
+                                onPressed: () => navigatorKey.currentState
+                              .popAndPushNamed(Page.Dashboard.route),
                                 child: Text(
                                   wpCategories['name'],
                                   style: AppStyle.subTitle,
