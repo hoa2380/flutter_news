@@ -7,9 +7,9 @@ import 'package:flutter_news/configs/config.dart';
 import 'package:flutter_news/wp-api.dart';
 
 class PostPage extends StatefulWidget {
-  final String title, desc, date, avatarUrlAuthor;
+  final String title, desc, date, img;
   final int id;
-  PostPage({this.id, this.title, this.desc, this.date, this.avatarUrlAuthor});
+  PostPage({this.id, this.title, this.desc, this.date, this.img});
   @override
   _PostPageState createState() => _PostPageState();
 }
@@ -42,9 +42,15 @@ class _PostPageState extends State<PostPage> {
                 )
               ],
             ),
-            Html(
-              data: widget.desc,
+            SizedBox(height: 5,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.network(widget.img)
+              ],
             ),
+            SizedBox(height: 5,),
+            Text(widget.desc, style: AppStyle.subBlack,),
             SizedBox(height: 20,),
             Container(
               padding: EdgeInsets.symmetric(vertical: 10),
@@ -73,7 +79,7 @@ class _PostPageState extends State<PostPage> {
                                       ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(300.0),
-                                        child: Image.network(wpCommentPost["author_avatar_urls"]["48"]),
+                                        child: Image.network(wpCommentPost["author_avatar_urls"]["24"]),
                                       ),
                                       SizedBox(width: 5,),
                                       Text(wpCommentPost["author_name"] + " :",

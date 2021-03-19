@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_news/configs/config.dart';
 import 'package:flutter_news/pages/about_page.dart';
 import 'package:flutter_news/pages/post_page.dart';
+import 'package:flutter_news/widget/content.dart';
 
 import '../wp-api.dart';
 
@@ -171,6 +172,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
             ),
           ),
           CategoryBody(pageController: pageController),
+          Content()
         ],
       ),
     );
@@ -335,6 +337,7 @@ class _PostTileState extends State<PostTile> {
                   title: widget.title,
                   desc: widget.desc,
                   date: widget.date,
+                  img: widget.imageApiUrl,
                 )
             )
         );
