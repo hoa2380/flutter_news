@@ -61,4 +61,8 @@ class AppStyle {
       decoration: TextDecoration.underline,
       fontWeight: FontWeight.w400);
 
+  static final TextStyle titlePost = TextStyle(
+      color: Colors.black87,
+      fontSize: 20,
+      fontWeight: FontWeight.w900);
 }

@@ -42,7 +42,8 @@ class AboutPage extends StatelessWidget {
                     fontSize: FontSize(18),
                     color: Colors.black87
                   ),
-                },)
+                },
+              )
             ],
           );
         }

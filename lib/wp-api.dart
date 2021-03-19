@@ -28,6 +28,19 @@ Future<List> fetchCategories(String id) async {
   return convertDatatoJson;
 }
 
+Future<List> fetchCommentPost(String id) async {
+  Map<String, dynamic> params = {"post": id};
+
+  String query = Uri(queryParameters: params).query;
+  var requestUrl =
+      "https://design.bpotech.com.vn/elodichvu/wp-json/wp/v2/comments" +
+          "?" +
+          query;
+  final response = await http.get(requestUrl);
+  var convertDatatoJson = jsonDecode(response.body);
+  return convertDatatoJson;
+}
+
 fetchAbout() async {
   final response = await http.get(
       "https://design.bpotech.com.vn/elodichvu/wp-json/wp/v2/pages/75",

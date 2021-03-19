@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news/configs/config.dart';
 import 'package:flutter_news/pages/about_page.dart';
+import 'package:flutter_news/pages/post_page.dart';
 
 import '../wp-api.dart';
 
@@ -286,6 +287,7 @@ class SubCategories extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         Map wppost = snapshot.data[index];
                         return PostTile(
+                          id: wppost['id'],
                             imageApiUrl: wppost['_links']["wp:featuredmedia"]
                             [0]["href"],
                             date: wppost['date'],
@@ -310,8 +312,9 @@ class SubCategories extends StatelessWidget {
 
 class PostTile extends StatefulWidget {
   final String imageApiUrl, title, desc, date, excerpt;
+  final int id;
 
-  PostTile({this.imageApiUrl, this.title, this.date,this.desc, this.excerpt});
+  PostTile({this.id, this.imageApiUrl, this.title, this.date,this.desc, this.excerpt});
 
   @override
   _PostTileState createState() => _PostTileState();
@@ -323,7 +326,21 @@ class _PostTileState extends State<PostTile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PostPage(
+                  id: widget.id,
+                  title: widget.title,
+                  desc: widget.desc,
+                  date: widget.date,
+                )
+            )
+        );
+        print(widget.id);
+        print(widget.title);
+      },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: Column(
@@ -338,7 +355,8 @@ class _PostTileState extends State<PostTile> {
                     return Image.network(imageUrl);
                   }
                   return Center(child: CircularProgressIndicator());
-                }),
+                },
+            ),
             SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -357,7 +375,8 @@ class _PostTileState extends State<PostTile> {
               textAlign: TextAlign.justify,
               overflow: TextOverflow.ellipsis,
               maxLines: 8,
-              softWrap: true,)
+              softWrap: true,
+            )
           ],
         ),
       ),
