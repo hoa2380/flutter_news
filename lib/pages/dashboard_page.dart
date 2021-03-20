@@ -3,6 +3,7 @@ import 'package:flutter_news/configs/configs.dart';
 import 'package:flutter_news/pages/about_page.dart';
 
 import '../wp-api.dart';
+import 'pages.dart';
 
 class DashBoardPage extends StatefulWidget {
   @override
@@ -176,24 +177,8 @@ class _DashBoardPageState extends State<DashBoardPage> {
   }
 }
 
-class MyInheritedWidget extends InheritedWidget {
-  MyInheritedWidget({Widget child, this.myData}) : super(child: child);
-
-  final int myData;
-
-  @override
-  bool updateShouldNotify(MyInheritedWidget oldWidget) {
-    return false;
-  }
-
-  static MyInheritedWidget of(BuildContext context){
-    return context.dependOnInheritedWidgetOfExactType<MyInheritedWidget>();
-  }
-}
-
 class CategoryBody extends StatefulWidget {
   final PageController pageController;
-
   const CategoryBody({Key key, this.pageController}) : super(key: key);
   @override
   _CategoryBodyState createState() => _CategoryBodyState(pageController);
@@ -202,7 +187,6 @@ class CategoryBody extends StatefulWidget {
 class _CategoryBodyState extends State<CategoryBody> {
   PageController pageController;
   _CategoryBodyState(this.pageController);
-
   @override
   Widget build(BuildContext context) {
     final cateId = MyInheritedWidget.of(context).myData;
@@ -286,6 +270,8 @@ class SubCategories extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         Map wppost = snapshot.data[index];
                         return PostTile(
+                            id: wppost['id'],
+                            link: wppost['link'],
                             imageApiUrl: wppost['_links']["wp:featuredmedia"]
                             [0]["href"],
                             date: wppost['date'],
@@ -309,9 +295,10 @@ class SubCategories extends StatelessWidget {
 }
 
 class PostTile extends StatefulWidget {
-  final String imageApiUrl, title, desc, date, excerpt;
+  final int id;
+  final String imageApiUrl, title, desc, date, excerpt, link;
 
-  PostTile({this.imageApiUrl, this.title, this.date,this.desc, this.excerpt});
+  PostTile({this.id, this.imageApiUrl, this.title, this.date,this.desc, this.excerpt, this.link});
 
   @override
   _PostTileState createState() => _PostTileState();
@@ -323,7 +310,21 @@ class _PostTileState extends State<PostTile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PostPage(
+                  id: widget.id,
+                  title: widget.title,
+                  desc: widget.desc,
+                  date: widget.date,
+                  img: imageUrl,
+                  link: widget.link,
+                )
+            )
+        );
+      },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: Column(

@@ -2,24 +2,42 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_news/configs/configs.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_news/wp-api.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'pages.dart';
 
-enum Page { Dashboard, Post, Login, About }
+enum Page { Dashboard, Post, About }
 
 extension on Page {
   String get route => describeEnum(this);
 }
 
+class MyInheritedWidget extends InheritedWidget {
+  MyInheritedWidget({Widget child, this.myData})
+      : super(child: child);
+
+  final int myData;
+
+  @override
+  bool updateShouldNotify(MyInheritedWidget oldWidget) {
+    return false;
+  }
+
+  static MyInheritedWidget of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MyInheritedWidget>();
+  }
+}
+
 class Home extends HookWidget {
   String category;
+
   final Map<Page, Widget> _fragments = {
     Page.Dashboard: DashBoardPage(),
     Page.Post: PostPage(),
-    Page.Login: LoginPage(),
     Page.About: AboutPage(),
   };
 
@@ -80,48 +98,7 @@ class Home extends HookWidget {
                             )
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 5.0, vertical: 5.0),
-                          child: Container(
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: AppColors.colorSecondary,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                InkWell(
-                                    child: Text(
-                                  'Đăng nhập',
-                                  style: AppStyle.sub,
-                                )),
-                                Text(' | ',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold)),
-                                InkWell(
-                                    child: Text(
-                                  'Ghi danh',
-                                  style: AppStyle.sub,
-                                )),
-                                Spacer(),
-                                Icon(
-                                  Icons.search,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        WidgetLogin(),
                         Slider(),
                       ],
                     ),
@@ -180,8 +157,7 @@ class Home extends HookWidget {
                                   primary: AppColors.colorPrimary,
                                   // shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
                                 ),
-                                onPressed: () => navigatorKey.currentState
-                              .popAndPushNamed(Page.Dashboard.route),
+                                onPressed: () {},
                                 child: Text(
                                   wpCategories['name'],
                                   style: AppStyle.subTitle,
@@ -199,6 +175,160 @@ class Home extends HookWidget {
         ),
       ),
     );
+  }
+}
+
+class WidgetLogin extends StatefulWidget {
+  @override
+  _WidgetLoginState createState() => _WidgetLoginState();
+}
+
+class _WidgetLoginState extends State<WidgetLogin> {
+  bool _isLogin = false;
+  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  FacebookLogin _facebookLogin = FacebookLogin();
+  User _user;
+
+  @override
+  void initState() {
+    _firebaseAuth.authStateChanges().listen((user) {
+      if(user != null){
+        _user = user;
+        print("user is logged in");
+        print(user.displayName);
+        print(user.email);
+        print(_user.uid);
+      }
+      else {
+        print("user is not logged in");
+        //navigate to sign in page using Navigator Widget
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+      child: Container(
+        height: 40,
+        decoration: BoxDecoration(
+          color: AppColors.colorSecondary,
+        ),
+        child: _user != null
+            ? Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 10,
+            ),
+            ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: Image.network(_user.photoURL, height: 34)),
+            SizedBox(
+              width: 8,
+            ),
+            InkWell(
+                onTap: () {},
+                child: Text( "Chào! " +
+                    _user.displayName,
+                  style: AppStyle.sub,
+                )),
+            Text(' | ',
+                style: TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold)),
+            InkWell(
+                onTap: () async {
+                  await _sigOut();
+                },
+                child: Text(
+                  'Đăng xuất',
+                  style: AppStyle.sub,
+                )),
+            Spacer(),
+            Icon(
+              Icons.search,
+              color: Colors.white,
+              size: 30,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+          ],
+        )
+            : Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 10,
+            ),
+            InkWell(
+                onTap: () async {
+                  await _handleLogin();
+                },
+                child: Text(
+                  'Đăng nhập với facebook',
+                  style: AppStyle.sub,
+                )),
+            Text(' | ',
+                style: TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold)),
+            InkWell(
+                child: Text(
+                  'Ghi danh',
+                  style: AppStyle.sub,
+                )),
+            Spacer(),
+            Icon(
+              Icons.search,
+              color: Colors.white,
+              size: 30,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+          ],
+        )
+
+      ),
+    );
+  }
+
+  Future _handleLogin() async {
+    FacebookLoginResult _facebookLoginResult =
+        await _facebookLogin.logIn(["email"]);
+    switch (_facebookLoginResult.status) {
+      case FacebookLoginStatus.cancelledByUser:
+        print('cancelledByUser');
+        break;
+      case FacebookLoginStatus.error:
+        print('error');
+        break;
+      case FacebookLoginStatus.loggedIn:
+        await _loginWithFacebook(_facebookLoginResult);
+        break;
+    }
+  }
+
+  Future _loginWithFacebook(FacebookLoginResult _facebookLoginResult) async {
+    FacebookAccessToken _facebookAccessToken = _facebookLoginResult.accessToken;
+    AuthCredential _authCredential = FacebookAuthProvider.credential(_facebookAccessToken.token);
+    var a = await _firebaseAuth.signInWithCredential(_authCredential);
+    setState(() {
+      _user = a.user;
+    });
+  }
+
+  Future _sigOut() async {
+    await _firebaseAuth.signOut().then((value) {
+      setState(() {
+        _facebookLogin.logOut();
+        _user = null;
+      });
+    });
   }
 }
 

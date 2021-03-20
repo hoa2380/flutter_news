@@ -1,7 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_news/facebook_login/facebook_login.dart';
-import 'package:flutter_news/routes.dart';
 import 'package:flutter_news/pages/home.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -49,3 +48,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
