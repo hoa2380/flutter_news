@@ -6,6 +6,8 @@
 	<string>73040570050-ebcr45i4ojvkrulk0phd8f25cjqbd0rj.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.73040570050-ebcr45i4ojvkrulk0phd8f25cjqbd0rj</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>73040570050-htr0ah8c0pbd7uu36i0s8q5a9j9bs6jk.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDM8u2DqSs6twgtqplU2UmZfWPyhbMj7Yo</string>
 	<key>GCM_SENDER_ID</key>
@@ -30,5 +32,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:73040570050:ios:e35d493f4ef163a5af7d5b</string>
+	<key>DATABASE_URL</key>
+	<string>https://flutter-news-523da-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>
