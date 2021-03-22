@@ -192,8 +192,11 @@ class _WidgetLoginState extends State<WidgetLogin> {
   @override
   void initState() {
     _firebaseAuth.authStateChanges().listen((user) {
+      _user = user;
       if(user != null){
-        _user = user;
+        setState(() {
+          _isLogin = true;
+        });
         print("user is logged in");
         print(user.displayName);
         print(user.email);
@@ -216,8 +219,42 @@ class _WidgetLoginState extends State<WidgetLogin> {
         decoration: BoxDecoration(
           color: AppColors.colorSecondary,
         ),
-        child: _user != null
+        child: !_isLogin
             ? Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 10,
+            ),
+            InkWell(
+                onTap: () async {
+                  await _handleLogin();
+                },
+                child: Text(
+                  'Đăng nhập với facebook',
+                  style: AppStyle.sub,
+                )),
+            Text(' | ',
+                style: TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold)),
+            InkWell(
+                child: Text(
+                  'Ghi danh',
+                  style: AppStyle.sub,
+                )),
+            Spacer(),
+            Icon(
+              Icons.search,
+              color: Colors.white,
+              size: 30,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+          ],
+        )
+            : Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -258,48 +295,13 @@ class _WidgetLoginState extends State<WidgetLogin> {
             ),
           ],
         )
-            : Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 10,
-            ),
-            InkWell(
-                onTap: () async {
-                  await _handleLogin();
-                },
-                child: Text(
-                  'Đăng nhập với facebook',
-                  style: AppStyle.sub,
-                )),
-            Text(' | ',
-                style: TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold)),
-            InkWell(
-                child: Text(
-                  'Ghi danh',
-                  style: AppStyle.sub,
-                )),
-            Spacer(),
-            Icon(
-              Icons.search,
-              color: Colors.white,
-              size: 30,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-          ],
-        )
 
       ),
     );
   }
 
   Future _handleLogin() async {
-    FacebookLoginResult _facebookLoginResult =
-        await _facebookLogin.logIn(["email"]);
+    FacebookLoginResult _facebookLoginResult = await _facebookLogin.logIn(["email"]);
     switch (_facebookLoginResult.status) {
       case FacebookLoginStatus.cancelledByUser:
         print('cancelledByUser');
@@ -318,6 +320,7 @@ class _WidgetLoginState extends State<WidgetLogin> {
     AuthCredential _authCredential = FacebookAuthProvider.credential(_facebookAccessToken.token);
     var a = await _firebaseAuth.signInWithCredential(_authCredential);
     setState(() {
+      _isLogin = true;
       _user = a.user;
     });
   }
@@ -325,6 +328,7 @@ class _WidgetLoginState extends State<WidgetLogin> {
   Future _sigOut() async {
     await _firebaseAuth.signOut().then((value) {
       setState(() {
+        _isLogin = false;
         _facebookLogin.logOut();
         _user = null;
       });
